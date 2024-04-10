@@ -10,7 +10,7 @@
 ## 📦 安装
 
 ```bash
-npm install shangwu-cli -g
+npm install shangwul-cli -g
 ```
 ## 🚩使用
 
