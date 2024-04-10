@@ -3,6 +3,10 @@ import { clone } from '../utils/clone';
 import path from 'path';
 import fs from 'fs-extra';
 import log from '../utils/log';
+import { name, version} from '../../package.json';
+import chalk from "chalk";
+import axios, { AxiosResponse } from 'axios';
+import lodash from 'lodash';
 
 export interface TemplateInfo {
     name: string; // 项目名称
@@ -10,7 +14,7 @@ export interface TemplateInfo {
     description: string; // 项目描述
     branch: string; // 项目分支
 }
-// 这里保存了我写好了咱们的之前开发的模板
+// 这里保存之前开发的模板
 export const templates: Map<string, TemplateInfo> = new Map(
     [
         ["Vue3-Typescript-template1", {
@@ -27,6 +31,7 @@ export const templates: Map<string, TemplateInfo> = new Map(
         }]
     ]
 )
+// 判断文件是否覆盖
 export const isOverwrite = async (fileName: string) => {
     log.warning(`${fileName} 文件已存在 !`)
     return select({
@@ -37,7 +42,31 @@ export const isOverwrite = async (fileName: string) => {
         ]
     });
 }
-
+// 检查npm更新
+export const getNpmInfo = async (npmName: string) => {
+    const npmUrl = 'https://registry.npmjs.org/' + npmName
+    let res = {}
+    try {
+      res = await axios.get(npmUrl)
+    } catch (err) {
+      log.error(err as string)
+    }
+    return res
+}
+export const getNpmLatestVersion = async (npmName: string) => {
+    // data['dist-tags'].latest 为最新版本号
+    const { data } = (await getNpmInfo(npmName)) as AxiosResponse
+    return data['dist-tags'].latest
+}
+export const checkVersion = async (name: string, curVersion: string) => {
+    const latestVersion = await getNpmLatestVersion(name)
+    const need = lodash.gt(latestVersion, curVersion)
+    if(need) {
+      log.info(`检测到 dawei 最新版:${chalk.blueBright(latestVersion)} 当前版本:${chalk.blueBright(curVersion)} ~`)
+      log.info(`可使用 ${chalk.yellow('pnpm')} install dawei-cli@latest 更新 ~`)
+    }
+    return need
+}
 export default async function create(prjName: string) {
     // 需要将 map 处理成 @inquirer/prompts select 需要的形式
     const templateList = [...templates.entries()].map((item: [string, TemplateInfo]) => {
@@ -62,6 +91,9 @@ export default async function create(prjName: string) {
             return // 不覆盖直接结束
         }
     }
+
+    // 检查版本更新
+    await checkVersion(name,version)
 
     // 选择模板
     const templateName = await select({
