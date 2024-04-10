@@ -1,6 +1,6 @@
 {
   "name": "shangwul-cli",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "一个基于nodejs的命令行工具,用于快速生成项目模板。",
   "main": "dist/index.js",
   "bin": {
