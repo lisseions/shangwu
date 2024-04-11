@@ -40,31 +40,8 @@ export const isOverwrite = async (fileName: string) => {
         ]
     });
 }
-// // 检查npm更新
-// export const getNpmInfo = async (npmName: string) => {
-//     const npmUrl = 'https://registry.npmjs.org/' + npmName
-//     let res = {}
-//     try {
-//       res = await axios.get(npmUrl)
-//     } catch (err) {
-//       log.error(err as string)
-//     }
-//     return res
-// }
-// export const getNpmLatestVersion = async (npmName: string) => {
-//     // data['dist-tags'].latest 为最新版本号
-//     const { data } = (await getNpmInfo(npmName)) as AxiosResponse
-//     return data['dist-tags'].latest
-// }
-// export const checkVersion = async (name: string, curVersion: string) => {
-//     const latestVersion = await getNpmLatestVersion(name)
-//     const need = lodash.gt(latestVersion, curVersion)
-//     if(need) {
-//       log.info(`检测到 dawei 最新版:${chalk.blueBright(latestVersion)} 当前版本:${chalk.blueBright(curVersion)} ~`)
-//       log.info(`可使用 ${chalk.yellow('pnpm')} install dawei-cli@latest 更新 ~`)
-//     }
-//     return need
-// }
+
+// 创建项目
 export default async function create(prjName: string) {
     // 需要将 map 处理成 @inquirer/prompts select 需要的形式
     const templateList = [...templates.entries()].map((item: [string, TemplateInfo]) => {

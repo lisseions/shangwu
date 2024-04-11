@@ -24,8 +24,8 @@ export const checkVersion = async (name: string, curVersion: string) => {
     const latestVersion = await getNpmLatestVersion(name)
     const need = lodash.gt(latestVersion, curVersion)
     if(need) {
-      log.info(`检测到 dawei 最新版:${chalk.blueBright(latestVersion)} 当前版本:${chalk.blueBright(curVersion)} ~`)
-      log.info(`可使用 ${chalk.yellow('pnpm')} install dawei-cli@latest 更新 ~`)
+      log.info(`检测到 shangwu 最新版:${chalk.blueBright(latestVersion)} 当前版本:${chalk.blueBright(curVersion)} ~`)
+      log.info(`可使用 ${chalk.yellow('pnpm')} install shangwul-cli@latest 更新 ~`)
     }
     return need
 }

@@ -2,7 +2,7 @@ import { Command } from 'commander'// 这里我们用 dawei 当作我的指令�
 import { version } from '../package.json'
 import create from './command/create'
 import { update } from './command/update'
-// 命令行中使用 dawei xxx 即可触发
+// 命令行中使用 shangwu xxx 即可触发
 const program = new Command('shangwu');
 
 // 查看版本号
